@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2> Sales People</h2>
+<hr>
+<div class="well">
+	<form method="POST" action='/SalesPeople/'>
+		<div class='form-group'>
+			<input name='name' class='form-control' placeholder='Sales Person Name'/>
+		</div>
+		<button type='submit' class='btn btn-primary'> Add Sales Person </button>	
+	</form>	
+</div>
+
+{% for user in users %}
+<div class="panel panel-default">
+	<div class='panel-heading'>
+	{{ user.name }}
+	<form style='display:inline' method='POST' action="/SalesPeople/{{user.id}}?_method=DELETE">
+		<!-- pull-right makes the button go the right as much as possible -->
+		<button type="submit" class='btn btn-danger pull-right'>Delete</button>
+	</form>
+	<br clear='all' />
+	</div>
+	<div class='panel-body'>
+		<ul class='list-group'>
+		{% for region in regions %}				
+			
+			{% if test(arr,user.id,region.id) %}
+				<!-- list-group-item-suceess highlights the item -->
+			<li class='list-group-item list-group-item-success'>
+			{{ region.zipcode }}
+				<form method="POST" style='display:inline' action="/SalesPeopleRegion/{{user.id}}/{{region.id}}?_method=DELETE">
+				<button type="submit" name="name" value="/SalesPeople" class="btn btn-default pull-right">Remove</button>
+				<br clear='all'/>
+				</form>
+			</li>
+		
+			{% else %}
+
+			<li class='list-group-item'>
+			{{ region.zipcode }}
+				<form method="POST" style='display:inline' action="/SalesPeopleRegion/{{user.id}}/{{region.id}}">
+				<button type="submit" name="name" value="/SalesPeople" class="btn btn-default pull-right">Add</button>
+				<br clear='all'/>
+				</form>
+			</li>
+			{% endif %}
+		{% endfor %}
+		</ul>
+	</div>
+</div>	
+{% endfor %}
+
+{% endblock %}

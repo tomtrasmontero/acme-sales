@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2> Regions </h2>
+<hr>
+<div class="well">
+	<form method="POST" action='/Regions'>
+		<div class='form-group'>
+			<input name="zipcode" class="form-control" placeholder="Region ZipCode"/>
+		</div>
+		<button type="submit" class='btn btn-primary'>Add Sales Region</button>
+	</form>
+</div>
+
+{% for region in regions %}	
+<div class="panel panel-default">
+	<div class='panel-heading'>
+	{{ region.zipcode }}
+		<form style='display:inline' method="POST">
+			<button class='btn btn-danger pull-right'>Delete</button>
+		</form>
+	<br clear="all"/>
+	</div>
+	<div class='panel-body'>
+		<ul class='list-group'>
+		{% for user in users %}
+			<li class="list-group-item list-group-item-success">
+			{{ user.name }}
+				<form method="POST" style="display:inline">
+					<button	type="submit" class="btn btn-default pull-right">Remove</button>
+					<br clear="all"/>
+				</form>
+			</li>
+		{% endfor %}
+		</ul>
+	</div>
+</div>
+
+{% endfor %}
+{% endblock %}

@@ -31,7 +31,7 @@ module.exports = app
 
 //set up home route
 app.get('/', function(req,res,next){
-	res.render("home",{title: 'Home'});
+	res.render("home",{homeTab: "active"});
 });
 
 
@@ -39,10 +39,3 @@ app.get('/', function(req,res,next){
 app.use('/Regions/',routeRegion);
 app.use('/SalesPeople/', routeSalesPeople);
 app.use('/SalesPeopleRegion/', routeSalesPeopleRegion);
-
-
-
-app.use(function(err, req, res, next){
-	console.log("oh noes!!!!!!!!!!!!");
-	console.log(err, err.stack);
-})

@@ -8,7 +8,7 @@ module.exports = router;
 router.get('/',function(req,res,next){
 	model.listAllPersonRegion()
 	.spread(function(salesPerson,regions,salesPersonRegion){
-;		res.render('regions', {regionTab: "active", users:salesPerson , regions: regions, arr: salesPersonRegion, test: model.salesRegionTest});
+		res.render('regions', {regionTab: "active", users:salesPerson , regions: regions, arr: salesPersonRegion, test: model.salesRegionTest});
 	})
 	.catch(next);
 });

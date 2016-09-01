@@ -2,14 +2,13 @@ const router = require('express').Router();
 const model = require('../models/index.js');
 const Promise = require('bluebird');
 
-
 //export router for app.js to use
 module.exports = router;
 
 router.get('/',function(req,res,next){
 	model.listAllPersonRegion()
-	.spread(function(salesPersons,regions,salesPersonRegion){
-		res.render('regions', {regions: regions, users: salesPersons});
+	.spread(function(salesPerson,regions,salesPersonRegion){
+;		res.render('regions', {title:'Regions', users:salesPerson , regions: regions, arr: salesPersonRegion, test: model.salesRegionTest});
 	})
 	.catch(next);
 });
@@ -18,6 +17,14 @@ router.post('/', function(req,res,next){
 	model.Region.addRegion(req.body.zipcode)
 	.then(function(result){
 		res.redirect('/Regions');
+	})
+	.catch(next);
+})
+
+router.delete('/:regionId', function(req,res,next){
+	model.Region.deleteRegion(req.params.regionId)
+	.then(function(result){
+		res.redirect('/Regions')
 	})
 	.catch(next);
 })

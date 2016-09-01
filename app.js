@@ -31,7 +31,7 @@ module.exports = app
 
 //set up home route
 app.get('/', function(req,res,next){
-	res.render("home");
+	res.render("home",{title: 'Home'});
 });
 
 

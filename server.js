@@ -5,7 +5,6 @@ const Region = models.Region;
 const SalesPerson = models.SalesPerson;
 const SalesPersonRegion = models.SalesPersonRegion;
 
-
 //sync up database before starting up the server
 Region.sync({})//force:true
 .then(function(){

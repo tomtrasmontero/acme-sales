@@ -9,7 +9,7 @@ router.get('/',function(req,res,next){
 	model.listAllPersonRegion()
 	.spread(function(salesPerson,regions,salesPersonRegion){
 		// var salesRegArr = model.salesRegionArray(salesPersonRegion);
-		res.render('salesPeople',{users:salesPerson, regions:regions, arr: salesPersonRegion, test: model.salesRegionTest});		
+		res.render('salesPeople',{title:"Sales People", users:salesPerson, regions:regions, arr: salesPersonRegion, test: model.salesRegionTest});		
 	})
 	.catch(next);
 });

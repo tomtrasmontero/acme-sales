@@ -8,26 +8,23 @@ const db = new Sequelize('postgres://localhost:5432/acme_sales',{
 //require bluebird to use Promise.all and pass that to app.js to a .spread
 const Promise = require('bluebird');
 
+
+//=====refactor, use .get() instead of .dataValues.keynames
+
 //function list
 const listAllPersonRegion = function(){
 	return Promise.all([SalesPerson.findAll({}), Region.findAll({}), SalesPersonRegion.listSalesAndRegion()]);
 }
 
-// grab the SalesPersonRegion and forms an array 
+// grab the SalesPersonRegion and forms an array then check if they belong
 const salesRegionTest = function(arr, salesId,regionId){
 	let test = false;
-	let salesRegion = [];
 
-	arr.forEach(function(array){
-		salesRegion.push([array.dataValues.salespersonId,array.dataValues.regionId]);
-	})
-
-	salesRegion.filter(function(arr){
-		if(arr[0] === salesId && arr[1] === regionId){
+	arr.filter(function(array){
+		if(array.get().salespersonId === salesId && array.get().regionId === regionId){
 			test = true;
 		}
 	})
-
 	return test;
 };
 
@@ -43,14 +40,19 @@ const SalesPerson = db.define('salesperson',{
 			})
 		},
 		deletePerson: function(id){
-			return SalesPerson.findOne({
+			let x = SalesPerson.destroy({
 				where:{
 					id: id
 				}
-			})
-			.then(function(result){
-				result.destroy();
-			})
+			});
+
+			let y = SalesPersonRegion.destroy({
+					where:{
+						salespersonId: id
+					}
+				});
+
+			return Promise.all([x,y]);
 		}
 	}
 });
@@ -66,10 +68,23 @@ const Region = db.define('region',{
 				}
 			})
 		},
-		deleteRegion: function(id){}
+		deleteRegion: function(id){
+			let x = Region.destroy({
+				where:{
+					id: id
+				}
+			});
+
+			let y = SalesPersonRegion.destroy({
+					where:{
+						regionId: id
+					}
+				});
+			
+			return Promise.all([x,y]);
+		}
 	}
 });
-
 
 const SalesPersonRegion = db.define('salespersonregion',{	
 },{
@@ -97,7 +112,7 @@ const SalesPersonRegion = db.define('salespersonregion',{
 			.then(function(result){
 				result.destroy();
 			})
-		}
+		}		
 	}
 });
 
